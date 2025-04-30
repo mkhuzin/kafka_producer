@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @EmbeddedKafka(
 		partitions = 1,
-		brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"},
+		brokerProperties = {"listeners=PLAINTEXT://localhost:9094", "port=9094"},
 		topics = "topic1",
 		controlledShutdown = true
 )
