@@ -1,5 +1,6 @@
 package org.example;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -21,10 +22,14 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @EmbeddedKafka(
 		partitions = 1,
-		brokerProperties = {"listeners=PLAINTEXT://localhost:9094", "port=9094"},
+		//kraft = false,
+		ports = 9094,
+		//brokerProperties = {"listeners=PLAINTEXT://localhost:9094", "port=9094"},
+		brokerProperties = "listeners=PLAINTEXT://localhost:9094",
 		topics = "topic1",
 		controlledShutdown = true
 )
@@ -71,6 +76,10 @@ class EmbeddedKafkaTests {
 
 	@Test
 	void testKafkaSendAndReceive() {
+
+		log.info("info = {}", myDataProducer.getInfo());
+
+		log.info("embeddedKafka broker = {}", embeddedKafkaBroker.getBrokersAsString());
 
 		MyData sentData = new MyData(
 				1,
