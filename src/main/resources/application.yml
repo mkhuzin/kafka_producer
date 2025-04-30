@@ -1,5 +1,14 @@
-spring:
+app:
   kafka:
     producer:
-      bootstrap-servers:
-        - localhost:9094
+      server-host: localhost
+      server-port: 9094
+      value-serializer: org.example.MyDataSerializer
+      enable-ssl: false
+      truststore-type: ""
+      truststore-location: ""
+      truststore-password: ""
+      keystore-type: ""
+      keystore-location: ""
+      keystore-password: ""
+      topic: topic1
