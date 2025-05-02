@@ -1,5 +1,9 @@
 spring:
   kafka:
+    bootstrap-servers:
+      - localhost:9094
     producer:
-      bootstrap-servers:
-        - localhost:9094
+      value-serializer: org.example.MyDataSerializer
+
+app:
+  my-data-producer-topic: topic1
