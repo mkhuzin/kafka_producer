@@ -49,6 +49,10 @@ public class EmbeddedKafkaTests {
 	@BeforeAll
 	void setup() {
 
+		log.info("kafka producer configuration properties = {}", producerFactory.getConfigurationProperties());
+
+		log.info("embeddedKafka brokers = {}", embeddedKafkaBroker.getBrokersAsString());
+
 		Map<String, Object> consumerProperties = KafkaTestUtils.consumerProps(
 				"consumerGroup1",
 				"true",
@@ -65,10 +69,6 @@ public class EmbeddedKafkaTests {
 				consumer,
 				topic
 		);
-
-		log.info("kafka producer configuration properties = {}", producerFactory.getConfigurationProperties());
-
-		log.info("embeddedKafka brokers = {}", embeddedKafkaBroker.getBrokersAsString());
 
 	}
 
