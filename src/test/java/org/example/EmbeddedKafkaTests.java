@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -37,6 +38,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EmbeddedKafkaTests {
 
 	@Autowired
+	private ProducerFactory<String, MyData> producerFactory;
+
+	@Autowired
 	EmbeddedKafkaBroker embeddedKafkaBroker;
 
 	@Autowired
@@ -49,6 +53,10 @@ class EmbeddedKafkaTests {
 
 	@BeforeAll
 	void setup() {
+
+		log.info("kafka producer configuration properties = {}", producerFactory.getConfigurationProperties());
+
+		log.info("embeddedKafka brokers = {}", embeddedKafkaBroker.getBrokersAsString());
 
 		Map<String, Object> consumerProperties = KafkaTestUtils.consumerProps(
 				"consumerGroup1",
