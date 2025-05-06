@@ -35,10 +35,12 @@ public class KafkaProducerConfig {
 
 		Map<String, Object> configMap = new HashMap<>();
 
-		configMap.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, configProperties.getBootstrap() == null ?
-				configProperties.getServerHost() + ":" + configProperties.getServerPort():
-				configProperties.getBootstrap()
-				);
+		configMap.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+				configProperties.getBootstrap() == null ?
+						configProperties.getServerHost() + ":" + configProperties.getServerPort() :
+						configProperties.getBootstrap()
+		);
+
 		configMap.put(ProducerConfig.ACKS_CONFIG, "all");
 		configMap.put(ProducerConfig.RETRIES_CONFIG, 0);
 		configMap.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);

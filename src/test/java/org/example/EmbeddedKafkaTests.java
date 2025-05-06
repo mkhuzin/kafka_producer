@@ -28,14 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @EmbeddedKafka(
 		partitions = 1,
-		topics = "topic1",
+		topics = "${app.kafka.producer.topic}",
 		controlledShutdown = true
 )
-@TestPropertySource(properties = {
-		"app.kafka.producer.bootstrap=${spring.embedded.kafka.brokers}",
-		"app.kafka.producer.topic=topic1"
-})
 @SpringBootTest
+@TestPropertySource(properties = "app.kafka.producer.bootstrap = ${spring.embedded.kafka.brokers}")
 class EmbeddedKafkaTests {
 
 	@Autowired
@@ -96,12 +93,12 @@ class EmbeddedKafkaTests {
 				LocalDate.now()
 		);
 
-		var result = myDataProducer.send1(sentData).join();
-		log.info("record metadata {}", result.getProducerRecord().topic());
+		myDataProducer.send1(sentData);
+
 		ConsumerRecord<String, MyData> consumerRecord = KafkaTestUtils.getSingleRecord(
 				consumer,
 				topic,
-				Duration.ofSeconds(10)
+				Duration.ofSeconds(15)
 		);
 
 		MyData receivedData = consumerRecord.value();

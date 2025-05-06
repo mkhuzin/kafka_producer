@@ -30,6 +30,7 @@ public class KafkaProducerConfigProperties {
 	private String keystorePassword;
 
 	private String topic;
+
 	private String bootstrap;
 
 }
