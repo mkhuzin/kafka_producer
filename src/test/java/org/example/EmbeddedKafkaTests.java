@@ -16,6 +16,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -27,13 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @EmbeddedKafka(
 		partitions = 1,
-		//kraft = false,
-		ports = 9094,
-		//brokerProperties = {"listeners=PLAINTEXT://localhost:9094", "port=9094"},
-		brokerProperties = "listeners=PLAINTEXT://localhost:9094",
 		topics = "topic1",
 		controlledShutdown = true
 )
+@TestPropertySource(properties = {
+		"app.kafka.producer.bootstrap=${spring.embedded.kafka.brokers}",
+		"app.kafka.producer.topic=topic1"
+})
 @SpringBootTest
 class EmbeddedKafkaTests {
 
@@ -95,8 +96,8 @@ class EmbeddedKafkaTests {
 				LocalDate.now()
 		);
 
-		myDataProducer.send1(sentData);
-
+		var result = myDataProducer.send1(sentData).join();
+		log.info("record metadata {}", result.getProducerRecord().topic());
 		ConsumerRecord<String, MyData> consumerRecord = KafkaTestUtils.getSingleRecord(
 				consumer,
 				topic,
